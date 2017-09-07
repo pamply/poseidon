@@ -1,0 +1,21 @@
+{
+  "name": "poseidon-server",
+  "version": "1.0.0",
+  "description": "server using http protocol with JSON format",
+  "main": "index.js",
+  "author": "mpamplona",
+  "license": "MIT",
+  "dependencies": {
+    "coffeescript": "^1.12.7"
+  },
+  "devDependencies": {
+    "body-parser": "^1.17.2",
+    "browserify": "^14.4.0",
+    "coffeeify": "^2.1.0",
+    "express": "^4.15.4",
+    "gulp": "^3.9.1",
+    "gulp-coffee": "^2.3.4",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.9.0"
+  }
+}
