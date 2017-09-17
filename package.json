@@ -6,7 +6,9 @@
   "author": "mpamplona",
   "license": "MIT",
   "dependencies": {
-    "coffeescript": "^1.12.7"
+    "coffeescript": "^1.12.7",
+    "ramda": "^0.24.1",
+    "ws": "^3.2.0"
   },
   "devDependencies": {
     "body-parser": "^1.17.2",
