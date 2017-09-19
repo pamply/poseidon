@@ -5,34 +5,20 @@ bodyParser = require('body-parser')
 R          = require('ramda')
 WebSocket  = require('ws')
 
-port = 3000
+SERVER_PORT    = 3000
+WEBSOCKET_PORT = 8085
 
-wss = new WebSocket.Server({port:8085})
+wss = new WebSocket.Server({port:WEBSOCKET_PORT})
+
 app.use(bodyParser.json())
 
 wss.on 'connection', (ws) ->
   console.log('connection')
   app.post '/poseidon', (req, res) ->
+    wss.clients.forEach((client) -> if client.readyState is WebSocket.OPEN then client.send(JSON.stringify(req.body)))
     res.contentType('application/json')
-    ws.send(JSON.stringify(req.body))
     res.status(200).json(req.body)
 
-  ws.on 'message', (message) ->
-    console.log('received: %s', message)
-  #setInterval(R.partial(sendMessage, [ws]), 1000)
 
-app.listen port, ->
-  console.log("Listening on port #{port}")
-###sendMessage = (ws) ->
-  data = 
-    id             : Math.round(Math.random()*2)+1
-    status         : 1
-    leak_magnitude : 1
-    level          : 1
-    pressure       : Math.random()*100
-    flow           : 15.3256
-    lat            : Math.random()*50
-    lon            : -100.111111
-    time_sent      : "2107-08-29T16:30:50.000"
-
-  ws.send(JSON.stringify(data))###
+app.listen SERVER_PORT, ->
+  console.log("Listening on port #{SERVER_PORT}")
