@@ -17,14 +17,13 @@ wss.on 'connection', (ws) ->
     ws.send(JSON.stringify(req.body))
     res.status(200).json(req.body)
 
-  app.listen port, ->
-    console.log("Listening on port #{port}")
-    console.log('connection')
-
   ws.on 'message', (message) ->
     console.log('received: %s', message)
   #setInterval(R.partial(sendMessage, [ws]), 1000)
 
+app.listen port, ->
+  console.log("Listening on port #{port}")
+  console.log('connection')
 ###sendMessage = (ws) ->
   data = 
     id             : Math.round(Math.random()*2)+1
