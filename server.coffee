@@ -11,7 +11,7 @@ wss = new WebSocket.Server({port:8085})
 app.use(bodyParser.json())
 
 wss.on 'connection', (ws) ->
-
+  console.log('connection')
   app.post '/poseidon', (req, res) ->
     res.contentType('application/json')
     ws.send(JSON.stringify(req.body))
@@ -23,7 +23,6 @@ wss.on 'connection', (ws) ->
 
 app.listen port, ->
   console.log("Listening on port #{port}")
-  console.log('connection')
 ###sendMessage = (ws) ->
   data = 
     id             : Math.round(Math.random()*2)+1
