@@ -45,19 +45,25 @@ app.post '/poseidon', (req, res) ->
 app.get '/metrics', (req, res) ->
   console.log("Calling metrics")
   res.header("Access-Control-Allow-Origin", "*")
-  MongoClient.connect(URL_MONGODB, R.partial(onQuerying, [res, req.query.limit]))
+  MongoClient.connect(URL_MONGODB, R.partial(onQuerying, [res, req.query.limit, req.query.overMinutes]))
 
 onInsertion = (metric, err, db) ->
   if err
     console.log("Has been an error #{err}")
   else
     console.log("Successfully connection to db #{DATABASE_NAME_MONGODB}")
+    metric.time_sent = new Date(metric.time_sent)
     db.collection(DATABASE_COLLECTION_NAME).insertOne(metric, (err, res) -> 
       if err then throw err
       console.log("1 metric inserted")
       db.close()) 
 
-onQuerying = (res, limit, err, db) ->
-  db.collection(DATABASE_COLLECTION_NAME).find().limit(Number(limit)).sort(time_sent: -1).toArray((err, result) -> res.status(200).json(result) unless err)
+onQuerying = (res, limit, overMinutes, err, db) ->
+  console.log(new Date())
+  afterMinutes = new Date()
+  overMinutesInMilliseconds = overMinutes*60*1000
+  afterMinutes.setTime(afterMinutes.getTime() + overMinutesInMilliseconds)
+  console.log(afterMinutes)
+  db.collection(DATABASE_COLLECTION_NAME).find({"time_sent": {"$lt": afterMinutes, "$gt": new Date()}}).limit(Number(limit)).sort(time_sent: 1).toArray((err, result) -> res.status(200).json(result) unless err)
 
 
