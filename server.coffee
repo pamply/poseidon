@@ -64,7 +64,7 @@ onQuerying = (res, limit, overMinutes, err, db) ->
   overMinutesInMilliseconds = overMinutes*60*1000
   beforeMinutes.setTime(beforeMinutes.getTime() - overMinutesInMilliseconds)
   console.log(beforeMinutes)
-  db.collection(DATABASE_COLLECTION_NAME).find({"time_sent": {"$gt": beforeMinutes, "$lt": new Date()}}).limit(Number(limit)).sort(id: 1, time_sent: 1).toArray((err, result) -> compressResponse(result, res) unless err)
+  db.collection(DATABASE_COLLECTION_NAME).find().limit(Number(limit)).sort(id: 1, time_sent: 1).toArray((err, result) -> compressResponse(result, res) unless err)
 
 compressResponse = (result, res)->
   console.log(result)
